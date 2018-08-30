@@ -1,0 +1,26 @@
+
+subject=测试部署任务 在BIRD.VM上部署所有agent
+batch=2018-10-10
+
+username=itmadmin
+
+
+127.0.0.1     	BIRD.VM      	osagent
+127.0.0.1     	BIRD.VM      	db2agent
+127.0.0.1     	BIRD.VM      	TTagent    	username=bird     password=123456      instance_name=xi
+127.0.0.1     	BIRD.VM      	XXagent  :
+  	username=bird 
+    password=123 456 
+	instance_name=ha
+!!
+
+255.255.255.255 BIRD.VM         osagent
+127.0.0.2     	BIRD.VM2      	db2agent
+127.0.0.3     	BIRD.VM3      	db2agent
+127.0.0.4     	BIRD.VM4      	db2agent
+127.0.0.5     	BIRD.VM5      	db2agent
+127.0.0.6     	BIRD.VM6      	db2agent
+127.0.0.7     	BIRD.VM7      	db2agent
+127.0.0.8     	BIRD.VM8      	db2agent
+127.0.0.9     	BIRD.VM9      	db2agent
+127.0.0.10     	BIRD.VM10      	db2agent

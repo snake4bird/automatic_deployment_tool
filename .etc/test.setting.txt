@@ -1,0 +1,37 @@
+
+#开头作为注释行，可以出现在文件中任何位置
+#空行，可以出现在文件中任何位置
+
+space= 
+quote="
+
+password=pas${space}${space}ord
+
+1.1.1.1 test osagent password=pas${space}${quote}${space}ord
+
+test_cmd=printf "\x2D-\055-= test cmd =----\n#HOSTNAME=\nABC\rDEF <=> ABC\\\\rDEF\n" | sed -e "s/#HOSTNAME=.*/&	tab\ttest\nHOSTNAME=11.194.64.6/"
+
+test_cmd=${test_cmd};echo "password=${password}"; echo "";echo ".";
+
+multiline_cmd:echo #注释
+
+echo "
+多
+行
+
+#语法糖，不做语法分析，不能保证所有语句与直接运行的脚本含义一致，遇到处理有问题的情况只能逐步修正
+
+模
+式
+"
+
+if [[ -d "task" ]]; then
+	echo "在`pwd`下找到task目录"
+elif [[ -e "task" ]]; then
+	echo "在`pwd`下找到task文件"
+else
+	echo "在`pwd`下没找到task"
+fi
+
+!!
+

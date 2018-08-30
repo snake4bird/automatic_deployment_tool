@@ -1,0 +1,167 @@
+
+agent_name=osagent
+agent_alias=os
+
+#产品安装路径
+product_path=
+
+#agent介质路径,mount到nfs
+media_path=/opt/media/agent
+
+#agent介质文件
+media_file=IBM_TIV_MONITORING_V6.3.0.6_AGENT.tar
+
+#agent安装路径
+agent_path=/opt/IBM/ITM/OSagent
+
+#agent启动脚本
+agent_start_sh=/usr/script/itm/itm_LZ_start
+
+#agent停止脚本
+agent_stop_sh=/usr/script/itm/itm_LZ_stop
+
+#agent安装预处理
+#  agent介质准备
+#  silent_install文件准备
+#  动态安装参数获取
+install_preproc:
+cd "${media_path}"
+TARFILE="${media_file}"
+GZFILE="${TARFILE}.gz"
+if [[ ! -e "${TARFILE}" ]]; then
+	if [[ -e "${GZFILE}" ]]; then
+		gunzip "${GZFILE}"
+	fi
+fi
+
+if [[ ! -e "${TARFILE}" ]]; then
+	echo "找不到安装介质 ${media_path}/${media_file}"
+	exit 104
+fi
+
+echo "extract tar file ..."
+echo
+
+tar -xf ${TARFILE}
+
+echo
+echo "check silent_install.txt"
+echo
+
+grep "INSTALL_PRODUCT" silent_install.txt
+
+echo
+echo "change silent file"
+echo
+
+sed -i "s/INSTALL_PRODUCT\=all/INSTALL_PRODUCT\=lz/g" silent_install.txt
+
+echo
+echo "silent file changed"
+echo
+
+grep "INSTALL_PRODUCT" silent_install.txt
+
+cd "${CUR_DIR}"
+!!
+
+#agent安装命令
+install_command:
+cd /opt/media/agent
+
+echo
+echo "install ..."
+echo
+
+#./install.sh -q -h /opt/IBM/ITM/OSagent -p /opt/media/agent/silent_install.txt
+sleep 3
+echo "install completed"
+
+cd "${CUR_DIR}"
+!!
+
+#agent配置预处理
+#  silent_config文件准备
+#  动态配置参数获取
+config_preproc:
+cd /opt/media/agent
+
+echo
+echo change silent config
+echo
+
+
+sed -i -e "s/#HOSTNAME=.*/&\\nHOSTNAME=11.194.64.6/" silent_config.txt
+
+echo
+echo silent config file changed
+echo
+
+grep "HOSTNAME" silent_config.txt
+
+cd "${CUR_DIR}"
+!!
+
+
+#agent配置命令
+config_command:=
+
+echo
+echo config ...
+echo
+
+/opt/IBM/ITM/OSagent/bin/itmcmd config -A -p /opt/media/agent/silent_config.txt lz
+
+echo
+echo "linus os agent config completed"
+echo
+
+!!
+
+
+#agent启动预处理
+#  初始化命令
+#  动态启动参数获取
+startup_preproc=
+
+#agent启动命令
+startup_command=/usr/bin/su - root -c "/bin/ksh -c '/opt/IBM/ITM/bin/itmcmd agent start lz >/dev/null 2>&1'"
+
+
+#agent启动预处理
+#  初始化命令
+#  动态启动参数获取
+stop_preproc=
+
+#agent启动命令
+stop_command=/usr/bin/su - root -c "/bin/ksh -c '/opt/IBM/ITM/bin/itmcmd agent start lz >/dev/null 2>&1'"
+
+
+#部署完成后处理
+final_action:=
+echo
+echo "add start script"
+echo
+
+mkdir -p /usr/script/itm
+cd /usr/script/itm
+touch itm_LZ_start
+echo "/usr/bin/su - root -c \"/bin/ksh -c '/opt/IBM/ITM/bin/itmcmd agent start lz >/dev/null 2>&1'\"" > itm_LZ_start
+
+echo
+echo "add stop script"
+echo
+
+
+mkdir -p /usr/script/itm
+cd /usr/script/itm
+touch itm_LZ_stop
+echo "/usr/bin/su - root -c \"/bin/ksh -c '/opt/IBM/ITM/bin/itmcmd agent stop lz >/dev/null 2>&1'\"" > itm_LZ_stop
+
+
+echo
+echo "add script completed"
+echo
+
+!!
+

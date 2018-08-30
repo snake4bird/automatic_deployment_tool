@@ -1,0 +1,107 @@
+
+
+
+username=itmadmin
+
+test_cmd=printf "\x2D-\055-= test cmd =----\n#HOSTNAME=\nABC\rDEF <=> ABC\\\\rDEF\n" | sed -e "s/#HOSTNAME=.*/&	tab\ttest\nHOSTNAME=11.194.64.6/"
+test_cmd=@{test_cmd};echo "password=${password}"; echo "";echo "."
+
+multiline_script:
+echo #注释
+echo "
+多
+行
+
+#语法糖，不做语法分析，要保证所有语句与直接运行的脚本含义一致，处理起来还是挺费劲的
+
+模
+式
+"
+
+if [[ -d "task" ]]; then
+	echo "在`pwd`下找到task目录"
+elif [[ -e "task" ]]; then
+	echo "在`pwd`下找到task文件"
+else
+	echo "在`pwd`下没找到task"
+fi
+
+echo "交互测试"
+INPUT=""
+while [[ "$INPUT" != "ok" ]]; do
+	echo "请输入ok ..."
+	while read -t 1 INPUT
+	do
+		echo "input=$INPUT"
+	done
+	if [[ "$INPUT" == "" ]]; then
+		usleep 1000000
+	fi
+done
+
+echo baseline=$BASELINENO
+echo line=`expr $LINENO - $BASELINENO`
+echo "${FUNCNAME[@]}"
+
+echo "用能想到的最复杂的用例进行极限测试"
+echo "下面是一些会报错的脚本，甚至会终止脚本继续运行"
+echo "
+
+
+'#################################################'
+'#################################################'
+'#                                               #'
+'#                    _ooOoo_                    #'
+'#                   o8888888o                   #'
+'#                   88" . "88                   #'
+'#                   (| -_- |)                   #'
+'#                   O\  =  /O                   #'
+'#                ____/`---'\____                #'
+'#              .'  \\|     |//  `.              #'
+'#             /  \\|||  :  |||//  \             #'
+'#            /  _||||| -:- |||||-  \            #'
+'#            |   | \\\  -  /// |   |            #'
+'#            | \_|  ''\---/''  |   |            #'
+'#            \  .-\__  `-`  ___/-. /            #'
+'#          ___`. .'  /--.--\  `. . __           #'
+'#       ."" '<  `.___\_<|>_/___.'  >'"".        #'
+'#      | | :  `- \`.;`\ _ /`;.`/ - ` : | |      #'
+'#      \  \ `-.   \_ __\ /__ _/   .-` /  /      #'
+'#=======`-.____`-.___\_____/___.-`____.-'=======#'
+'#                    `=---='                    #'
+'#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^#'
+'# 一切众生皆具如来智慧德相 只因妄想执着不能证得 #'
+'#################################################'
+'# # # # # # # # # # # # # # # # # # # # # # # # #'
+'# # # # # # # # # # # # # # # # # # # # # # # # #'
+
+奇哉！奇哉！
+此诸众生云何具有如来智慧，愚痴迷惑，不知不见？
+我当教以圣道，令其永离妄想执着，自于身中得见如来广大智慧与佛无异。
+					-- 《大方广佛华严经》第37品 如来出现
+"
+echo "`"
+echo "上面的错误，导致这行不会输出"
+!!
+
+
+m_interact:
+"请输入ok" { send "ok\n"; exp_continue }
+!!
+
+
+127.0.0.1     	hostname      	osagent :
+username=bird
+password=123456
+main_process=cccccc=6;while [[ ${cccccc} -gt 0 ]]; do @{newline}echo "deploy ${username}@@@{ip} ${password} @{host} @{agent}"; cccccc=$(expr ${cccccc} - 1); echo ${cccccc}; sleep 1 @{newline}done; return 123
+!!
+
+127.0.0.1     	hostname      	db2agent    username=bird      password=123456
+127.0.0.1     	hostname      	TTagent    	username=user1     password=pa$$@{symbol_at}@{quote}@@@{space}word      instance_name=xi
+127.0.0.1     	hostname      	db2agent
+127.0.0.1     	hostname     	XXagent    	username=bird   :
+    instance_name=ha
+	password=123456
+	main_process=@{test_cmd};@{multiline_script}
+!!
+

@@ -1,0 +1,148 @@
+
+#开头作为注释行，可以出现在文件中任何位置
+#空行，可以出现在文件中任何位置
+#一行中两端的空白将被清除
+
+#标题，用于菜单显示，不设置不会在菜单中显示
+subject=
+batch=
+
+remote=
+
+username=root
+password=123456
+
+
+#all agent启动脚本
+all_agent_start_sh=/usr/script/itm/itm_ALL_start
+
+#all agent停止脚本
+all_agent_stop_sh=/usr/script/itm/itm_ALL_stop
+
+
+#itm agent启动脚本
+itm_agent_start_sh=/usr/script/itm/itm_start
+
+#itm agent停止脚本
+itm_agent_stop_sh=/usr/script/itm/itm_stop
+
+
+
+agent_setting_osagent=.etc/os.setting.txt
+agent_setting_db2agent=.etc/db2.setting.txt
+agent_setting_mqagent=.etc/mq.setting.txt
+agent_setting_oracleagent=.etc/oracle.setting.txt
+agent_setting_mysqlagent=.etc/mysql.setting.txt
+agent_setting_cicsagent=.etc/cics.setting.txt
+agent_setting_wasagent=.etc/was.setting.txt
+
+
+#产品安装路径
+product_path=
+
+#产品实例名称
+product_instance=
+
+#agent介质路径,mount到nfs
+media_path=/opt/meida/agent
+
+#agent介质文件
+media_file=
+
+#agent安装路径
+agent_path=/opt/IBM/ITM
+
+#agent启动脚本
+agent_start_sh=
+
+#agent停止脚本
+agent_stop_sh=
+
+
+#agent安装预处理
+#  agent介质准备
+#  silent_install文件准备
+#  动态安装参数获取
+install_preproc_name=安装预处理
+install_preproc=echo "install preprocess"
+
+#agent安装命令
+install_command_name=安装
+install_command=echo "install ..."
+
+
+#agent配置预处理
+#  silent_config文件准备
+#  动态配置参数获取
+config_preproc_name=配置预处理
+config_preproc=echo "config preprocess"
+
+
+#agent配置命令
+config_command_name=配置
+config_command=echo "config ..."
+
+
+#agent启动预处理
+#  初始化命令
+#  动态启动参数获取
+startup_preproc_name=启动预处理
+startup_preproc=echo "startup preprocess"
+
+#agent启动命令
+startup_command_name=启动
+startup_command=echo "startup ..."
+
+#agent停止预处理
+#  初始化命令
+#  动态停止参数获取
+shutdown_preproc_name=停止预处理
+shutdown_preproc=echo "shutdown preprocess"
+
+#agent启动命令
+shutdown_command_name=停止
+shutdown_command=echo "shutdown ..."
+
+
+#部署完成后处理
+final_action_name=整理
+final_action:
+call startup_command
+echo "OK"
+!!
+
+check_process_name=检查
+check_process:
+call startup_preproc
+call startup_command
+call shutdown_preproc
+call shutdown_command
+!!
+
+#部署完成后处理
+main_process_name=部署
+main_process:
+
+call install_preproc
+call install_command
+
+call config_preproc
+call config_command
+
+call check_process
+
+call final_action
+
+!!
+
+
+#agent部署交互处理, except script
+m_interact=
+
+
+################################################################
+#针对特定节点的配置
+################################################################
+
+127.0.0.1		hostname	    	username=deployuser        password=pa$$w0rd
+

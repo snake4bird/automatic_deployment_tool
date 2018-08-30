@@ -1,0 +1,4 @@
+127.0.0.1 hostname osagent 部署失败[123]
+127.0.0.1 hostname db2agent 部署完成
+127.0.0.1 hostname TTagent 部署失败[111]
+127.0.0.1 hostname XXagent 部署失败[1]

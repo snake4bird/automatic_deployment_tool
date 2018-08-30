@@ -1,0 +1,26 @@
+#!/bin/bash
+
+export LANG=zh_CN.utf8
+export LC_ALL=zh_CN.utf8
+
+if [[ -e ".aad" ]]; then
+    rm -rf .aad
+fi
+if [[ ! -e ".aad" ]]; then
+    mkdir .aad
+fi
+if [[ "$AAD_TRACE" == *V* ]]; then
+	echo "当前目录 `pwd` 文件列表："
+	ls -l
+fi
+cp .m.task .aad/task
+cd .aad
+if [ -e "../.m.tar" ]; then
+    tar -xf ../.m.tar --overwrite
+fi
+if [[ "$AAD_TRACE" == *V* ]]; then
+	echo "当前目录 `pwd` 文件列表："
+	ls -l
+	echo "$@"
+fi
+./m "$*"
