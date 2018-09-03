@@ -102,11 +102,14 @@
 #
 
 #配置信息覆盖关系
-#  0. <arguments>
-#  1. .etc/setting.txt
-#  2. <task file>
-#  3. <agent setting>
-#  4. <arguments>
+#  0. 程序内部缺省值 
+#  1. <arguments> 参数指定值
+#  2. .etc/setting.txt 缺省配置值
+#  3. <task file setting> 任务组特定配置值
+#  4. <task agent setting> 任务agent特定配置值
+#  5. <task host setting> 任务对应服务器特定配置值
+#  6. <task host-agent setting> 任务特定配置值
+#  7. <arguments> 参数指定值
 #
 
 
